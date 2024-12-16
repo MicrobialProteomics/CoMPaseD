@@ -1,0 +1,14 @@
+bio>=1.5.9
+biopython>=1.81
+colorama>=0.4
+keras>=2.13.1
+matplotlib>=3.9
+numpy>=1.22
+pandas>=2.0
+PyQt6-Qt6>=6.5
+PyQt6-sip>=13.5
+PyQt6>=6.5
+python-dateutil
+tensorflow-estimator
+tensorflow-intel
+tensorflow

@@ -1,0 +1,6 @@
+C:/Programs/crux_3_2_lysarginase/bin/crux.exe
+False
+ 
+ 
+False
+True

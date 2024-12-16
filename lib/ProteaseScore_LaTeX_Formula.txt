@@ -1,0 +1,14 @@
+Score_{comb} = \sqrt[w_{prot}+w_{pep}+w_{cov}]{\left(\frac{N_{prot_{comb}}}{N_{prot_{try}}}\right)^{\!w_{prot}}* \left (\frac{N_{pep_{comb}}}{N_{pep_{try}}}\right)^{\!w_{pep}}* \left(\frac{cov_{comb}}{cov_{try}}\right)^{\!w_{cov}}}
+
+
+Alternative:
+
+\begin{align}
+\\
+ProteaseScore_{comb} & = \\
+\\
+&
+\\
+&
+\sqrt[\sum{w_{prot, pep, cov}}]{\left(\frac{N_{prot_{comb}}}{N_{prot_{try}}}\right)^{\!w_{prot}}* \left (\frac{N_{pep_{comb}}}{N_{pep_{try}}}\right)^{\!w_{pep}}* \left(\frac{cov_{comb}}{cov_{try}}\right)^{\!w_{cov}}}
+\end{align}
