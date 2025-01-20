@@ -1,6 +1,6 @@
 # CoMPaseD Documentation
 
-The CoMPaseD documentation is available [here]().
+The CoMPaseD documentation is available [here](https://microbialproteomics.github.io/CoMPaseD/).
 
 
 ## Updating the documentation
