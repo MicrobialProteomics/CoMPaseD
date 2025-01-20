@@ -5,12 +5,12 @@ CoMPaseD is written in Python 3 and has been tested on Windows (≥ Windows 10) 
 
 ## Dependencies
 
-### crux toolkit
+### Crux Toolkit
 
 Binaries for the crux mass spectrometry analysis toolkit are available via the official [crux webpage](https://crux.ms/download.html).
 Download the binaries suitable for your operating system (Windows/Linux) (version ≥ 3.2).
 
-### python
+### Python
 
 To run CoMPaseD python Version 3.5–3.12 (tested) is required.
 
