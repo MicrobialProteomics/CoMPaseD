@@ -13,6 +13,7 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   pages: write
+  id-token: write
 
 jobs:
   build_sphinx_job:
