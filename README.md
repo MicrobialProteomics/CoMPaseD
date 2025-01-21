@@ -1,3 +1,4 @@
+[![build-sphinx-documentation](https://github.com/MicrobialProteomics/CoMPaseD/actions/workflows/build-documentation.yaml/badge.svg?branch=main)](https://github.com/MicrobialProteomics/CoMPaseD/actions/workflows/build-documentation.yaml)
 
 # CoMPaseD
 **Comparison of Multiple Protease Digestions**
