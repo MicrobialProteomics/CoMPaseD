@@ -35,7 +35,7 @@ Please make sure to use the syntax appropriate to your system setup.
 
 The command-line interface can be used by calling the `CoMPaseD_CLI.py` command.
 
-All parameters required for the different steps of CoMPaseD can be set in the `para.meters` file provided in the GitHub repository.
+All parameters required for the different steps of CoMPaseD can be set in the `parameters` file provided in the GitHub repository.
 
 ```{note}
 Many of these parameters can be directly overwritten through  the command-line arguments.
@@ -44,7 +44,7 @@ Many of these parameters can be directly overwritten through  the command-line a
 A full list of command-line arguments with explanations can be displayed using the `-h` flag.
 
 ```bash
-python CoMPaseD_CLI.py -h
+python CoMPaseD_cli.py -h
 ```
 
 | Parameter Type            | Command Line Argument       | Description                                                                                                         |
@@ -80,19 +80,19 @@ python CoMPaseD_CLI.py -h
 To run the full analysis provided by CoMPaseD use the following command.
 
 ```bash
-python CoMPaseD_CLI.py -p path/to/para.meters
+python CoMPaseD_cli.py -p path/to/parameters
 ```
 
 To run specific parts of the analysis, the export (-e), digestion (-d) or result analysis (-a) flags can be used.
 
 ```bash
-python CoMPaseD_CLI.py -p path/to/parameter.param [-e] [-d] [-a]
+python CoMPaseD_cli.py -p path/to/parameter.param [-e] [-d] [-a]
 ```
 
-```{note} The [-a] flag requires to run he rest of the analysis beforehand [-e] and [-d].
+```{note} The [-a] flag requires to run the rest of the analysis beforehand [-e] and [-d].
 ```
 
-All result files are written to the folder/files indicated in the `para.meters` file or given as command-line arguments.
+All result files are written to the folder/files indicated in the `parameters` file or given as command-line arguments.
 
 ### Advanced usage
 
@@ -101,32 +101,32 @@ For complex analyses or the comparison of different settings, CoMPaseD can be us
 For example, the following commands in a Windows batch file would run an analysis with identical parameters for three different organisms and output the results to folders named `Organism_1`, `Organism_2` and `Organism_3`:
 
 ```bash
-CoMPaseD_CLI.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_1 --fasta C:\Organism_1.fasta
+CoMPaseD_cli.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_1 --fasta C:\Organism_1.fasta
 ```
 
 ```bash
-CoMPaseD_CLI.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_2 --fasta C:\Organism_2.fasta
+CoMPaseD_cli.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_2 --fasta C:\Organism_2.fasta
 ```
 
 ```bash
-CoMPaseD_CLI.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_3 --fasta C:\Organism_3.fasta
+CoMPaseD_cli.py -p C:\CoMPaseD.param --out_folder C:\Result\Organism_3 --fasta C:\Organism_3.fasta
 ```
 
 Similarly, the following command in a Linux shell script would run one analysis with each of the two Deep MS-Peptide models using an existing export and digestion file which was specified in the parameter file (note that there is no line break within each command):
 
 ```bash
-python3 /home/user/CoMPaseD/CoMPaseD_CLI.py -p /home/user/CoMPaseD.param -a --DMSP_model /home/user/CoMPaseD/bin/DeepMSPep_Confetti_Model.h5 --out_folder /home/user/results/confetti_model/
+python3 /home/user/CoMPaseD/CoMPaseD_cli.py -p /home/user/CoMPaseD.param -a --DMSP_model /home/user/CoMPaseD/bin/DeepMSPep_Confetti_Model.h5 --out_folder /home/user/results/confetti_model/
 ```
 
 ```bash
-python3 /home/user/CoMPaseD/CoMPaseD_CLI.py -p /home/user/CoMPaseD.param -a --DMSP_model /home/user/CoMPaseD/bin/DeepMSPep_Original_Model.h5 --out_folder /home/user/results/original_model/
+python3 /home/user/CoMPaseD/CoMPaseD_cli.py -p /home/user/CoMPaseD.param -a --DMSP_model /home/user/CoMPaseD/bin/DeepMSPep_Original_Model.h5 --out_folder /home/user/results/original_model/
 ```
 
 Command line options will generally overwrite values in the parameter file and a parameter file with the used values will automatically be saved in the output folder together with the results.
 The complete list of options available can be displayed by executing:
 
 ```bash
-CoMPaseD_CLI.py --help
+CoMPaseD_cli.py --help
 ```
 
 (documentation-gui)=
