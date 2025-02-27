@@ -7,6 +7,12 @@ CoMPaseD is a bioinformatics tool to select suitable protease combinations in pr
 
 ---
 
+## Documentation
+
+Detailed information can be found [here](https://microbialproteomics.github.io/CoMPaseD/ ).
+
+---
+
 ## Requirements
 To run CoMPaseD, you will need:
 - **Python**: Version 3.5–3.12 (tested). [Download Python](https://www.python.org/downloads/)
