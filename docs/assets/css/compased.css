@@ -18,3 +18,53 @@
 .wy-nav-top a {
     color: black;
 }
+
+/* Style all <p> elements inside the important admonition, excluding the title */
+div.admonition.important {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+div.admonition.important > p:not(.admonition-title) {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+/* Style all <p> elements inside the important admonition, excluding the title */
+div.admonition.note {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+div.admonition.note > p:not(.admonition-title) {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+/* Style all <p> elements inside the important admonition, excluding the title */
+div.admonition.tip {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+div.admonition.tip > p:not(.admonition-title) {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+/* Style all <p> elements inside the important admonition, excluding the title */
+div.admonition.hint {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+div.admonition.hint > p:not(.admonition-title) {
+    font-size: 0.9em !important; /* Adjust font size for the main text */
+    line-height: 1.1; /* Ensure consistent line height */
+}
+
+
+body table.result-table td p {
+    font-size: 0.9em !important;
+    line-height: 1.1 !important;
+}

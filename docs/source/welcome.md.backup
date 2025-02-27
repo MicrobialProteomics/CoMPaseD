@@ -1,0 +1,51 @@
+# Welcome to CoMPaseD
+
+CoMPaseD - **Co**mparrison of **M**ultiple **P**rote**ase** **D**igestions
+
+--------------
+## Purpose
+This is a dummy text explaining that multiple proteases are better than trypsin alone in many cases...
+
+--------------
+## Quick Start
+CoMPaseD provides both, a command-line interface (CLI), and a graphical user interface (GUI).  
+```{note} The following command-line calls might slightly differ depending on you r python setup.
+```
+
+#### Commandline Interface (CLI)  
+To use the CLI run the `CoMPaseD_CLI.py` command.  
+All values for the parameters can be adjusted in the `parameters.params` file.  
+Running a full analysis can be done by calling the CLI file together wih the parameter file.  
+```bash
+python CoMPaseD_CLI.py -p path/to/parameters.params
+```
+For running individual steps of the tool, use the export (-e), digestion (-d) or result analysis (-a) flags.  
+```bash
+python CoMPaseD_CLI.py -p path/to/parameter.param [-e] [-d] [-a]
+```  
+```{note} The [-a] flag requires you to run the rest of the analysis beforehand [-e] and [-d].
+```  
+For a complete listing of command-line options use the help (-h) flag or refer to the [main documentation](documentation-cli).  
+```bash
+python CoMPaseD_CLI.py -h
+```
+
+#### Graphical User Interface (GUI)  
+The GUI can be accessed using `CoMPaseD_gui.py` command.  
+```bash
+python CoMPaseD_gui.py
+```  
+```{important} Upon the first program start an error message in the configuration tab indicates errors in the configuration file. 
+Adjust the path to the [crux](http://www.crux.ms) executable and save the altered configuration. For subsequent program starts, 
+the configuration tab should be skipped and CoMPaseD shows the analysis parameter tab directly.
+When the checkbox to use original Perl-based ProteoMapper scripts is checked, paths to these scripts must be selected as well 
+and the configuration saved again.
+```  
+![configuration](../assets/images/configuration-tab.png)  
+  
+--------------
+## Limitations  
+Do not use if you would like to identify an individual protein.  
+Simulating real data needs a lot of testing still.  
+
+<!-- (TODO: Add small description of what the tool is and does + some data about the developers + link to your group. Just a general Welcome page with no details on the tools)-->

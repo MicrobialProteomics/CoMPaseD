@@ -12,7 +12,9 @@ Download the binaries suitable for your operating system (Windows/Linux) (versio
 
 ### Python
 
-To run CoMPaseD python Version 3.5–3.12 (tested) is required.
+To run CoMPaseD python (versions 3.5–3.12 tested) is required.
+```{note} While newer python versions may be compatible, some dependencies may not be immediately available for the latest releases. It is recommended to use a tested version to ensure full functionality.
+```
 
 Install python using:
 
@@ -20,9 +22,9 @@ Install python using:
 
 ```{group-tab} Windows
 
-   1. Download python for your [Windows distribution](https://www.python.org/downloads/windows/).
+   1. Download Python for your [Windows distribution](https://www.python.org/downloads/windows/).
 
-   2. Install python by executing the downloaded file and following the instructions.
+   2. Install Python by executing the downloaded file and following the instructions.
 
 ```
 
@@ -73,7 +75,7 @@ The Python packages with suitable version numbers are listed in the provided `re
 ```{tip} We recommend using a virtual environment and pip to install these dependencies.
 ```
 
-Install the python requirements using `pip` and `requirements.txt`:
+Install the Python requirements using `pip` and `requirements.txt`:
 
 
 ````{tabs}
@@ -95,13 +97,13 @@ Install the python requirements using `pip` and `requirements.txt`:
        git clone https://github.com/MicrobialProteomics/CoMPaseD.git
 
    ```{tip}
-   You can use [Git Bash](https://git-scm.com/downloads) for a better command-line experience on Windows.
+   The Git command may not be available by default in many Windows installations. You may need to install [Git](https://git-scm.com/downloads) in advance.
 
 3. **Create and Activate a Virtual Environment**
 
    Set up a virtual environment to manage dependencies:
 
-       C:\Programs\Python\python.exe -m venv venv
+       C:\Programs\python\python.exe -m venv venv
        C:\Programs\CoMPaseD\venv\Scripts\activate.bat
 
 4. **Install Dependencies**
@@ -119,12 +121,6 @@ Install the python requirements using `pip` and `requirements.txt`:
 6. **Configure Crux Path**
 
     Set the path to the Crux toolkit within the GUI and save the configuration. CoMPaseD is now ready to use.
-
-    You can start it at any time by activating the virtual environment and running:
-
-
-    - `CoMPaseD_gui.py` (Graphical Interface)
-    - `CoMPaseD_cli.py` (Command-Line Interface)
 
 ```
 
@@ -170,66 +166,18 @@ Install the python requirements using `pip` and `requirements.txt`:
 
     Set the path to the Crux toolkit within the GUI and save the configuration. CoMPaseD is now ready to use.
 
-    You can start it at any time by activating the virtual environment and running:
-
-
-    - `CoMPaseD_gui.py` (Graphical Interface)
-    - `CoMPaseD_cli.py` (Command-Line Interface)
-
 ```
 
 ````
 
+```{figure} ../assets/images/configuration-tab.png
+:width: 75 %
+:name: configuration_initial
+Configuration tab upon first start of CoMPaseD. The red error message will disapear when the path to the crux executable is properly set and the configuration is saved.
+```  
+
+You can now start CoMPaseD at any time by activating the virtual environment and running:
 
 
-
-# Quickstart
-
-CoMPaseD provides both a command-line interface (CLI) and a graphical user interface (GUI).
-
-```{note} The following command-line calls might slightly differ depending on your python setup.
-```
-
-## Commandline Interface (CLI)
-
-To use the CLI run the `CoMPaseD_CLI.py` command.
-All values for the parameters can be adjusted in the `para.meters` file.
-
-Running a full analysis can be done by calling the CLI file together wih the parameter file.
-
-```bash
-python CoMPaseD_CLI.py -p path/to/parameter.param
-```
-
-For running individual steps of the tool, the export (-e), digestion (-d) or result analysis (-a) flags.
-
-```bash
-python CoMPaseD_CLI.py -p path/to/parameter.param [-e] [-d] [-a]
-```
-
-```{note} The [-a] flag requires you to run the rest of the analysis beforehand [-e] and [-d].
-```
-
-For a complete listing of command-line options use the help flag or refer to the [main documentation](documentation-cli).
-
-```bash
-python CoMPaseD_CLI.py -h
-```
-
-## Graphical User Interface (GUI)
-
-The GUI can be accessed using `CoMPaseD_gui.py` command.
-
-```bash
-python CoMPaseD_gui.py
-```
-
-```{important} Upon the first program start an error message in the configuration tab indicates errors in the configuration file. Adjust the path to the crux executable and save the altered configuration. For subsequent program starts, the configuration tab should be skipped and CoMPaseD shows the analysis parameter tab directly.
-When the checkbox to use original Perl-based ProteoMapper scripts is checked, paths to these scripts must be selected as well and the configuration saved again.
-```
-
-![configuration](../assets/images/configuration-tab.png)
-
-For a detailed description of the GUI, please refer to the [main documentation](documentation-gui).
-
-
+- `CoMPaseD_gui.py` (Graphical Interface)
+- `CoMPaseD_cli.py` (Command-Line Interface)

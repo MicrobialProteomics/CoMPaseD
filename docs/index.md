@@ -12,11 +12,16 @@ source/setup.md
 
 ```{toctree}
 :caption: Documentation
-source/documentation.md
+source/graphical_user_interface.md
+source/command_line_options.md
+
 ```
 
 ```{toctree}
 :caption: References
-source/citations.md
+source/configuration.md
+source/parameters.md
+source/result_files.md
 source/faq.md
+source/citations.md
 ```
