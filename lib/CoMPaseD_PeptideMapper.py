@@ -561,7 +561,7 @@ def map_peptides(peptideList, fastaFile, splitLen, ILEquivalence, protease, MC, 
 
     # check whether fasta file exists
     if not path.isfile(fastaFile):
-        print(f"{colorama.Fore.RED}ERROR: Fasta file not existin. Please check: {fastaFile}. \n Stopping. {colorama.Style.RESET_ALL}",
+        print(f"{colorama.Fore.RED}ERROR: Fasta file not existing. Please check: {fastaFile}. \n Stopping. {colorama.Style.RESET_ALL}",
             flush=True)
         print("", flush=True)
         return 1
