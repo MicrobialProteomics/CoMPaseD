@@ -63,6 +63,10 @@ class CoMPaseD_Parameter:
                          "[0.9102,0.0836,0.0058]"]
         self.Peptides_Sampling_Size = ["10000", "10000", "10000", "10000", "10000"]
         self.Pep_Level_Proteome_Cov = ["0.033051", "0.031973356", "0.014570424", "0.009367681", "0.053870932"]
+        self.Min_Pep_MW = 400
+        self.Max_Pep_MW = 6000
+        self.Min_Pep_Len = 6
+        self.Max_Pep_Len = 55
         # can be coverage, number, constant_number
         self.Sampling_Size_Based_On = "number"
         self.Bins = "0,50,100,99999"
@@ -154,6 +158,16 @@ class CoMPaseD_Parameter:
                 self.Weights_DeepMSPeptide_Predictions = param_import_dict["Weights_DeepMSPeptide_Predictions"]
             if "Digestion_result_file" in  param_import_dict.keys():
                 self.Digestion_result_file = param_import_dict["Digestion_result_file"]
+            if "Min_Pep_MW" in param_import_dict.keys():
+                self.Min_Pep_MW = param_import_dict["Min_Pep_MW"]
+            if "Max_Pep_MW" in param_import_dict.keys():
+                self.Max_Pep_MW = param_import_dict["Max_Pep_MW"]
+            if "Min_Pep_Len" in param_import_dict.keys():
+                self.Min_Pep_Len = param_import_dict["Min_Pep_Len"]
+            if "Max_Pep_Len" in param_import_dict.keys():
+                self.Max_Pep_Len = param_import_dict["Max_Pep_Len"]
+
+
         # validate param values in ParamClass obj and correct typical formatting errors
         if valid_param_file:
             parameter_validation, parameter_error_count, parameter_errors = self.validate_params()
@@ -781,6 +795,15 @@ class CoMPaseD_Parameter:
                 self.Path_DeepMSPeptide_Model = param_import_dict["Path_DeepMSPeptide_Model"]
             if "Weights_DeepMSPeptide_Predictions" in param_import_dict.keys():
                 self.Weights_DeepMSPeptide_Predictions = param_import_dict["Weights_DeepMSPeptide_Predictions"]
+            if "Min_Pep_MW" in param_import_dict.keys():
+                self.Min_Pep_MW = param_import_dict["Min_Pep_MW"]
+            if "Max_Pep_MW" in param_import_dict.keys():
+                self.Max_Pep_MW = param_import_dict["Max_Pep_MW"]
+            if "Min_Pep_Len" in param_import_dict.keys():
+                self.Min_Pep_Len = param_import_dict["Min_Pep_Len"]
+            if "Max_Pep_Len" in param_import_dict.keys():
+                self.Max_Pep_Len = param_import_dict["Max_Pep_Len"]
+
             # validate param values in ParamClass obj and correct typical formatting errors
 
             parameter_validation, parameter_error_count, parameter_errors = self.validate_params()

@@ -104,12 +104,20 @@ def main():
     mc_string = args.max_mc_list
     protease_list = proteases_string.split(',')
     mc_list = [int(mc) for mc in mc_string.split(',')]
+    min_pep_mw = args.min_mass
+    max_pep_mw = args.max_mass
+    min_pep_len = args.min_len
+    max_pep_len = args.max_len
 
     # get all crux commands in a list
     crux_cmd_list, exp_protease_list, exp_mc_list, crux_out_file_list = get_crux_cmds(protease_list,
                                                                                       mc_list,
                                                                                       fasta,
-                                                                                      crux_path)
+                                                                                      crux_path,
+                                                                                      min_pep_mw,
+                                                                                      max_pep_mw,
+                                                                                      min_pep_len,
+                                                                                      max_pep_len)
     crux_file_list_file = path.join(tmp_out_folder, 'crux_result_files.tsv')
 
     with open(crux_file_list_file, 'w') as f:
@@ -361,7 +369,7 @@ def generate_peptides_call(out_folder,
     return peptide_cutter_command
 
 
-def get_crux_cmds(protease_list, mc_list, fasta, crux_path):
+def get_crux_cmds(protease_list, mc_list, fasta, crux_path, min_pep_mw=400, max_pep_mw=6000, min_pep_len=6, max_pep_len=55):
     # get plain list with possible protease / MCs combinations
     expanded_protease_list = list()
     expanded_mc_list = list()
@@ -384,7 +392,11 @@ def get_crux_cmds(protease_list, mc_list, fasta, crux_path):
                                           fasta=path.join(fasta),
                                           crux_path=path.join(crux_path),
                                           enzyme=protease,
-                                          missed_cleavages=mc)
+                                          missed_cleavages=mc,
+                                          min_mass=min_pep_mw,
+                                          max_mass=max_pep_mw,
+                                          min_len=min_pep_len,
+                                          max_len=max_pep_len)
         crux_cmd_list.append(crux_cmd)
         crux_out_file_str = str(protease_clean[0]) + "_" + str(mc) + \
                             "_MCs.generate-peptides.target.txt" + "\t" + protease + \

@@ -55,6 +55,10 @@ def main():
     param_args.add_argument('--mc_freq', help="change missed cleavage sites frequency, e.g. '--mc_freq [0.7415,0.2090,0.0484],[0.9102,0.0836,0.0058],[0.5620,0.2753,0.1110,0.0419],...'", default="", type=str)
     param_args.add_argument('--num_peps', help="change number of peptides to sample, provide as comma-separated list in same order as enzymes, e.g. '--num_peps 10000,10000,10000,10000'; DO NOT use together with --frac_peps", default="", type=str)
     param_args.add_argument('--frac_peps', help="change fraction of generated peptides to sample, provide as comma-separated list in same order as enzymes, e.g. '--frac_peps 0.685,0.780,0.230'; DO NOT use together with --num_peps", default="", type=str)
+    param_args.add_argument('--min_pep_mw', help="change minimal peptide mass (in Da), e.g. '--min_pep_mw 400', default = 400", default=-1, type=int)
+    param_args.add_argument('--max_pep_mw', help="change maximal peptide mass (in Da), e.g. '--min_pep_mw 6000', default = 6000", default= -1, type=int)
+    param_args.add_argument('--min_pep_len', help="change minimal peptide length (in amino acids), e.g. '--min_pep_len 6', default = 6", default=-1, type=int)
+    param_args.add_argument('--max_pep_len', help="change maximal peptide length (in amino acids), e.g. '--min_pep_len 55', default = 55", default=-1, type=int)
     param_args.add_argument('--bins', help="change protein binning, provide as comma-separated list of protein length in amino acids, e.g. '--bins 0,200,999' will group all peptides between 0 and 200 aa into one group and all between 201 and 999 aa into another", default="", type=str)
     param_args.add_argument('--undetectable', help="change undetectable protein fraction in protein bins, provide as comma-separated list, e.g. '--undetectable 40,20' will assume 40 percent undetectable protein in first group and 20 percent in second", default="", type=str)
     param_args.add_argument('--DMSP_weight', help="change weighting factor of Deep-MS-Peptide prediction, set to zero to disable DMSP prediction, e.g. '--DMSP_weight 2.5'", default=-1, type=float)
@@ -132,6 +136,16 @@ def main():
     elif not args.frac_peps == "":
         param_obj.Pep_Level_Proteome_Cov = parse_num_peps(args.frac_peps)
         param_obj.Sampling_Size_Based_On = "coverage"
+
+    # # peptide mw and length filter
+    if not args.min_pep_mw < 0:
+        param_obj.Min_Pep_MW = args.min_pep_mw
+    if not args.max_pep_mw < 0:
+        param_obj.Max_Pep_MW = args.max_pep_mw
+    if not args.min_pep_len < 0:
+        param_obj.Min_Pep_Len = args.min_pep_len
+    if not args.max_pep_len < 0:
+        param_obj.Max_Pep_Len = args.max_pep_len
 
     # # binning
     if not args.bins == "":
@@ -332,6 +346,8 @@ def run_digest(param_obj: CoMPaseD_gui_param_functions.CoMPaseD_Parameter, args)
         file_location = path.dirname(path.realpath(__file__))
         CoMPaseD_CruxScript = path.join(file_location, 'lib','CoMPaseD_crux_script.py')
 
+
+
         args_list = [python_exec,
                      CoMPaseD_CruxScript,
                      "--out_folder",
@@ -348,6 +364,14 @@ def run_digest(param_obj: CoMPaseD_gui_param_functions.CoMPaseD_Parameter, args)
                      param_obj.Proteases,
                      "--max_mc_list",
                      param_obj.Max_MCs,
+                     "--min_mass",
+                     str(param_obj.Min_Pep_MW),
+                     "--max_mass",
+                     str(param_obj.Max_Pep_MW),
+                     "--min_len",
+                     str(param_obj.Min_Pep_Len),
+                     "--max_len",
+                     str(param_obj.Max_Pep_Len),
                      "--unique_peps_file",
                      param_obj.Digestion_result_file]
         if not python_exec == "":
@@ -368,6 +392,14 @@ def run_digest(param_obj: CoMPaseD_gui_param_functions.CoMPaseD_Parameter, args)
                     param_obj.Proteases,
                     "--max_mc_list",
                     param_obj.Max_MCs,
+                    "--min_mass",
+                    str(param_obj.Min_Pep_MW),
+                    "--max_mass",
+                    str(param_obj.Max_Pep_MW),
+                    "--min_len",
+                    str(param_obj.Min_Pep_Len),
+                    "--max_len",
+                    str(param_obj.Max_Pep_Len),
                     "--unique_peps_file",
                     param_obj.Digestion_result_file,
                     "--indexing_key_len",
