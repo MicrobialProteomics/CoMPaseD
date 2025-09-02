@@ -21,14 +21,21 @@ class CoMPaseD_Resolution_Issue(QtW.QDialog):
         self.setWindowTitle("Wrong Screen Resolution")
         self.resize(400, 200)
         layout = QtW.QVBoxLayout(self)
-        label = QtW.QLabel(
+        lable = QtW.QLabel(
             f"WARNING!\n\n"
-            f"Your screen resolution is {width}×{height}.\n"            
-            f"This application requires at least {min_width}×{min_height}.\n"
+            f"Current screen resolution is {width}×{height}.\n"            
+            f"CoMPaseD is designed for {min_width}×{min_height}.\n"
             "Some parts of the interface may not display correctly."
         )
-        layout.addWidget(label)
+        lable.setWordWrap(True)
+        lable.setProperty("class", "normal_label")
+
+        lable.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(lable)
+
         button = QtW.QPushButton("Ok")
+        button.setProperty("class", "small_btn")
+        button.setMinimumSize(100, 35)
         button.clicked.connect(self.accept)
         layout.addWidget(button, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
 
@@ -65,11 +72,18 @@ class CoMPaseD(QtW.QMainWindow):
             self.setWindowIcon(QtGui.QIcon(item_img))
 
         # check screen resolution and warn if screen is too small
-        self.current_screen = self.windowHandle().screen()
-        self.current_screen.geometryChanged.connect(self.on_screen_geometry_changed)
-        self.windowHandle().screenChanged.connect(self.on_screen_changed)
-
+        self.current_screen = QtGui.QGuiApplication.primaryScreen()
         self.check_resolution()
+
+
+    def showEvent(self, event):
+        """Called when window is shown - now we can safely get the window handle."""
+        super().showEvent(event)
+        # Now set up screen monitoring with the actual window handle
+        if self.windowHandle():
+            self.current_screen = self.windowHandle().screen()
+            self.current_screen.geometryChanged.connect(self.on_screen_geometry_changed)
+            self.windowHandle().screenChanged.connect(self.on_screen_changed)
 
     def check_resolution(self):
         """Check resolution and warn if too small."""
