@@ -499,7 +499,7 @@ class CoMPaseD_Parameter:
                 Protease = Protease.lower()
                 tmp_Protease.append(clean_parameter_values(parameter_string=Protease,
                                                            parameter_name="Proteases",
-                                                           allowed_values='abcdefghijklmnopqrstuvwxyz-,/'))
+                                                           allowed_values='abcdefghijklmnopqrstuvwxyz-,/{}[]|;.:'))
             self.Proteases = tmp_Protease
 
         if isinstance(self.Max_MCs, list):

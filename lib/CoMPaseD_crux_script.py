@@ -1,5 +1,6 @@
 import argparse
 import colorama
+import re
 from multiprocessing import Process
 from sys import platform
 from pandas import read_csv, DataFrame, Series, concat
@@ -303,7 +304,7 @@ def clean_protease_names(protease_list: list) -> list:
     '''remove special characters from protease names in preparation of file name creation'''
     protease_list_clean = list()
     for each_protease in protease_list:
-        for character in '\\/:*?"<>|,;-':
+        for character in '\\/:*?"<>|,;-[]{}':
             each_protease = each_protease.replace(character, '_')
         # ensure that no duplicates are created
         while each_protease in protease_list_clean:
@@ -339,17 +340,36 @@ def generate_peptides_call(out_folder,
                       "iodosobenzoate", "proline-endopeptidase", "staph-protease", "asp-n", "lys-c", "lys-n",
                       "arg-c",
                       "glu-c", "pepsin-a", "elastase-trypsin-chymotrypsin", "lysarginase"}
-    if enzyme not in allowed_enzyme:
+
+    if enzyme.lower().startswith("custom"):
+        return_code, cleavage_spec = handle_custom_proteases(enzyme)
+
+        if return_code == -1:
+            str_help = "{P}"
+            raise ValueError(f"Custom proteases must contain exactly two pairs of squared or curly brackets, e.g. 'custom,trypsin,[KR]|{str_help}'. '{enzyme}' is mal-formatted. Please check. Stopping.")
+        elif return_code == -2:
+            raise ValueError(f"Inconsistent bracket type in first bracket pair of '{enzyme}'. Please check. Stopping.")
+        elif return_code == -3:
+            raise ValueError(f"Inconsistent bracket type in second bracket pair of '{enzyme}'. Please check. Stopping.")
+        elif return_code == 0:
+            enzyme_custom_switch = " --custom-enzyme "
+            # !Important: Use inner double quotation marks to ensure windows handles the cleavage specificity correctly
+            tmp_enzyme = f'"{cleavage_spec}"'
+
+    elif enzyme not in allowed_enzyme:
         raise ValueError(f"Protease not defined. Must be one of {allowed_enzyme}.")
+
+    else:
+        enzyme_custom_switch = " --enzyme "
+        tmp_enzyme = enzyme
 
     # generate crux command
     peptide_cutter_command = str(crux_path) + " generate-peptides --overwrite T --min-mass " + str(
         min_mass) + " --max-mass " + str(
         max_mass) + " --min-length " + str(min_len) + " --max-length " + str(max_len) + " --digestion " + str(
         digestion) + " --missed-cleavages " + str(missed_cleavages) + " --clip-nterm-methionine " + str(
-        clip_n_term_met) + " --decoy-format " + str(decoy_format) + " --enzyme " + str(
-        enzyme) + " --fileroot " + str(
-        out_folder) + " " + str(fasta)
+        clip_n_term_met) + " --decoy-format " + str(decoy_format) + str(enzyme_custom_switch) + str(
+        tmp_enzyme) + " --fileroot " + str(out_folder) + " " + str(fasta)
 
     return peptide_cutter_command
 
@@ -469,6 +489,74 @@ def map_peptides(out_folder, tmp_out_folder, fasta, promast_path):
         promast_cmd_list.append(generate_promast_call(fasta, peptide_list=f, out_name=o, promast_path=promast_path))
 
     return promast_cmd_list, protease_list, mc_list, mapped_crux_file_list
+
+
+def handle_custom_proteases(protease_string):
+    """generate string for custom enzyme in crux"""
+
+    backup_protease_string = protease_string
+
+    # protease cleavage string can only be in the form []|[], []|{}, {}|[] or {}|{} filled with any letter in between
+    # there is no check whether letters are part of bio-alphabet but upper-case is required
+    # X indicates any amino acid
+    # input would be, e.g. 'custom [X]|[RKD]' for lysarginase and asp-n
+    # whitespaces are stripped
+
+    # remove all whitespaces, including e.g. tab which might originate from pasting
+    protease_string = "".join(protease_string.split())
+
+    # custom - trypsin + chymotrypsin [FWYLKR]|{P}
+    # regex that extracts the opening bracket, letters and closing bracket before and after the pipe as individual groups
+    pattern = r'.*?([\[{])([A-Za-z]*)([\]}])\|([\[{])([A-Za-z]*)([\]}])'
+
+    m = re.match(pattern, protease_string)
+    if not m:
+        # if pattern was not found, there is no way to handle this - directly raise error
+        raise ValueError(f"Invalid custom enzyme syntax: {protease_string}")
+
+    pre_open, pre_content, pre_close, post_open, post_content, post_close = m.groups()
+
+    # change amino acids to upper-case and handle empty brackets as any amino acid
+    if pre_content:
+        pre_content = pre_content.upper()
+    elif pre_open == "{":
+        print(
+            f"WARNING: First bracket pair in {backup_protease_string} is empty. Will be replaced with X for any amino acid.",
+            flush=True)
+        print("This results in undigested proteins sequences.", flush=True)
+        print("Please check if this was intended.", flush=True)
+        pre_content = "X"
+    else:
+        print(
+            f"WARNING: First bracket pair in {backup_protease_string} is empty. Will be replaced with X for any amino acid.",
+            flush=True)
+        print("Please check if this was intended.", flush=True)
+        pre_content = "X"
+
+    if post_content:
+        post_content = post_content.upper()
+    elif post_open == "{":
+        print(
+            f"WARNING: Second bracket pair in {backup_protease_string} is empty. Will be replaced with X for any amino acid.",
+            flush=True)
+        print("This results in undigested proteins sequences.", flush=True)
+        print("Please check if this was intended.", flush=True)
+        post_content = "X"
+    else:
+        print(
+            f"WARNING: Second bracket pair in {backup_protease_string} is empty. Will be replaced with X for any amino acid.",
+            flush=True)
+        print("Please check if this was intended.", flush=True)
+        post_content = "X"
+
+    # check that opening and closing brackets match, return error code otherwise
+    bracket_dict = {"[": "]", "{": "}"}
+    if bracket_dict.get(pre_open) != pre_close:
+        return -2, "", ""
+    if bracket_dict.get(post_open) != post_close:
+        return -3, "", ""
+
+    return 0, f"{pre_open}{pre_content}{pre_close}|{post_open}{post_content}{post_close}"
 
 
 if __name__ == "__main__":
