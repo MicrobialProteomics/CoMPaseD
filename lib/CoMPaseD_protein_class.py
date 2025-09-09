@@ -10,7 +10,7 @@ class ProteinClass(Seq.Seq):
     """
 
     def __init__(self, identifier, sequence):
-
+        super().__init__(sequence)
         self.id = identifier
         self.seq = sequence
         self.length = len(self.seq)
@@ -18,6 +18,14 @@ class ProteinClass(Seq.Seq):
         self.pep_pos = []
         self.pep_length = []
         self.coverage = 0
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if isinstance(other, ProteinClass):
+            return self.id == other.id
+        return False
 
 
     def add_pep(self, peptide, peptide_position, peptide_length):
@@ -65,7 +73,7 @@ class CoMPaseD_results():
     inherits from biopythons sequence class with amino acids
     """
 
-    def __init__(self, protease_combination: list, replicate: str, group: str, min_peps_per_prot = 2):
+    def __init__(self, protease_combination: list, replicate: str, group: str, min_peps_per_prot = 2, use_unique_peps_only = "True"):
         '''
         if len(protease_combination) > 1:
             self.combination = " - ".join(protease_combination)
@@ -78,6 +86,7 @@ class CoMPaseD_results():
         self.random_sampling = replicate
         self.group = group
         self.min_peps_per_prot = min_peps_per_prot
+        self.use_unique_peps_only = use_unique_peps_only
 
         self.number_proteins = int()
         self.number_peptides_total = int()
@@ -99,12 +108,29 @@ class CoMPaseD_results():
 
     def get_results(self, protein_list, update_coverage = False):
         """get results based on list of ProteinClass objects, set update_coverage to True if coverage was not calculated before"""
-        self.get_number_proteins(protein_list)
-        self.get_number_peptides(protein_list)
-        if update_coverage:
-            self.get_coverage_result(protein_list, calc_coverage=True)
+        if self.use_unique_peps_only == "True":
+            self.get_number_proteins(protein_list)
+            self.get_number_peptides(protein_list)
+            self.get_coverage_result(protein_list, calc_coverage=update_coverage)
+        # whenever the parameter is not explicitly the True string, fall back to grouped version
         else:
-            self.get_coverage_result(protein_list, calc_coverage=False)
+            self.get_number_proteins_groups(protein_list)
+            self.get_number_peptides_groups(protein_list)
+            self.get_coverage_result_groups(protein_list, calc_coverage=update_coverage)
+
+    def get_number_proteins_groups(self, protein_groups):
+        total = int()
+        filtered = int()
+        for gr in protein_groups:
+            if any(len(p.peps) >= 1 for p in gr):
+                total += 1
+
+            if any(len(p.peps) >= self.min_peps_per_prot for p in gr):
+                filtered += 1
+
+        self.number_proteins = total
+        self.number_proteins_filtered = filtered
+
 
 
     def get_number_proteins(self, protein_list):
@@ -121,6 +147,37 @@ class CoMPaseD_results():
         # update result obj
         self.number_proteins = total
         self.number_proteins_filtered = filtered
+
+
+    def get_number_peptides_groups(self, protein_groups):
+        total = list()
+        filtered = list()
+
+        for group in protein_groups:
+            group_total = list()
+            group_filtered = list()
+            for p in group:
+                if len(p.peps) >= 1:
+                    group_total.append(len(p.peps))
+                if len(p.peps) >= self.min_peps_per_prot:
+                    group_filtered.append(len(p.peps))
+
+
+            # treat the median number of peptides for a group as the representative value
+            if group_total:
+                total.append(median(group_total))
+            if group_filtered:
+                filtered.append(median(group_filtered))
+
+        # aggregate on current result level (using only one representative value for each group)
+        # convert totals back to int as median might have introduced float numbers
+
+        self.number_peptides_total = int(round(sum(total))) if total else 0
+        self.number_peptides_mean = mean(total)
+        self.number_peptides_median = median(total)
+        self.number_peptides_total_filtered = int(round(sum(filtered))) if filtered else 0
+        self.number_peptides_mean_filtered = mean(filtered)
+        self.number_peptides_median_filtered = median(filtered)
 
 
     def get_number_peptides(self, protein_list):
@@ -141,6 +198,31 @@ class CoMPaseD_results():
         self.number_peptides_total_filtered = sum(filtered)
         self.number_peptides_mean_filtered = mean(filtered)
         self.number_peptides_median_filtered = median(filtered)
+
+
+    def get_coverage_result_groups(self, protein_groups, calc_coverage=False):
+        coverages_total = list()
+        coverages_filtered = list()
+
+        for group in protein_groups:
+            if calc_coverage:
+                for p in group:
+                    p.calcCoverage()
+
+            if group:
+                group_coverages = [p.coverage for p in group]
+                group_cov = median(group_coverages)
+                if group_cov:
+                    coverages_total.append(group_cov)
+
+                # filter groups in the same way as get_number_proteins_groups
+                if any(len(p.peps) >= self.min_peps_per_prot for p in group):
+                    coverages_filtered.append(group_cov)
+
+            self.coverage_mean = mean(coverages_total) if coverages_total else 0
+            self.coverage_median = median(coverages_total) if coverages_total else 0
+            self.coverage_mean_filtered = mean(coverages_filtered) if coverages_filtered else 0
+            self.coverage_median_filtered = median(coverages_filtered) if coverages_filtered else 0
 
 
     def get_coverage_result(self, protein_list, calc_coverage = False):

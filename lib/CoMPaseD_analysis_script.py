@@ -111,6 +111,13 @@ def main():
         pwf_df = read_csv(path.join(params.Protein_weight_file), sep='\t')
         pep_df = read_csv(digest_file, sep='\t')
 
+        # add number of mapping proteins for each peptide, can be used for filtering on unique peptides later
+        pep_df['protein_count'] = pep_df.groupby(['peptide', 'MC', 'Enzyme'])['protein'].transform('nunique')
+
+        # filter for unique peptides per enzyme and MC if set so in the params
+        if params.Use_Unique_Peptides_Only == "True":
+            pep_df = pep_df[pep_df['protein_count'] == 1]
+
         # merge raw sampling weights into pep_df
         pep_df = merge(left=pep_df, right=pwf_df,
                        left_on="protein", right_on="Identifier",
@@ -184,7 +191,7 @@ def main():
         pep_df[smp_col_list] = pep_df[smp_col_list].astype('int8')
 
         # write output if required
-        if params.Sampling_output:
+        if params.Sampling_output == "True":
             sampling_out_file = path.join(params.Output_directory, "RandomSampling.tsv")
 
             # if file exists, try to rename existing file with last modification date and time
@@ -441,13 +448,56 @@ def analyse_sampling(pep_df, protease_combin, curr_group, params, n, tot_n) -> l
         protein_list = fillProteinList(protein_list, tmp_df_smp)
 
         # after each sampling generate new result obj and put to list
-        tmp_result = CoMPaseD_results(protease_combin, sampling_col, curr_group, min_peps_per_prot=2)
-        tmp_result.get_results(protein_list, update_coverage=True)
+        tmp_result = CoMPaseD_results(protease_combin, sampling_col, curr_group, min_peps_per_prot=2, use_unique_peps_only=params.Use_Unique_Peptides_Only)
+
+        if not params.Use_Unique_Peptides_Only == "True":
+            protein_groups = group_proteins_parsimony(protein_list)
+            tmp_result.get_results(protein_groups, update_coverage=True)
+        else:
+            tmp_result.get_results(protein_list, update_coverage=True)
+
         combin_result_list.append(tmp_result)
 
     print(f"\t Finished analysing protease combination {n} of {tot_n}", flush=True)
 
     return combin_result_list
+
+
+def group_proteins_parsimony(protein_list):
+    """
+    Protein inference by greedy parsimony.
+    Groups proteins that are indistinguishable or subsets of others.
+    Returns a list of protein groups (lists of ProteinClass objects).
+    """
+    # store peptide sets for each protein
+    prot_to_peps = {p: set(str(pep) for pep in p.peps) for p in protein_list}
+
+    # uncovered peptides
+    uncovered_peps = set.union(*prot_to_peps.values())
+    groups = []
+    used_proteins = set()
+
+    while uncovered_peps:
+        # pick protein explaining the most uncovered peptides
+        best_prot = max(
+            (p for p in protein_list if p not in used_proteins),
+            key=lambda p: len(uncovered_peps & prot_to_peps[p]),
+        )
+        best_peps = prot_to_peps[best_prot]
+
+        # find indistinguishable OR subset proteins
+        group_prots = [
+            p for p, peps in prot_to_peps.items()
+            if peps <= best_peps and p not in used_proteins
+        ]
+
+        groups.append(group_prots)
+
+        # mark their peptides as explained
+        uncovered_peps -= best_peps
+        used_proteins.update(group_prots)
+
+    return groups
 
 
 def protease_mc_expansion(protease_list, mc_list):

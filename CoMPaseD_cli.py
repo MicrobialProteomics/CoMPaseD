@@ -65,6 +65,7 @@ def main():
     param_args.add_argument('--DMSP_model', help="change Deep-MS-Peptide prediction model path, e.g. '--DMSP_model path/to/prediction_model.h5'", default="", type=str)
     param_args.add_argument('--samplings', help="change number of random samplings, e.g. '--samplings 5", default=-1, type=int)
     param_args.add_argument('--dynamic_range', help="change dynamic range of protein abundance, e.g. '--dynamic_range 5.0", default=-1, type=float)
+    param_args.add_argument('--use_unique_peptides_only', help="change whether to use only unique peptides or assemble protein groups and consider shared peptides, e.g. '--use_unique_peptides_only False' will assemble protein groups", default="", type=str)
 
     args = parser.parse_args()
 
@@ -185,6 +186,12 @@ def main():
     # # random samplings
     if not args.samplings < 0:
         param_obj.Sampling_Number = str(args.samplings)
+
+    if not args.use_unique_peptides_only == "":
+        if args.use_unique_peptides_only == "True":
+            param_obj.Use_Unique_Peptides_Only = "True"
+        else:
+            param_obj.Use_Unique_Peptides_Only = "False"
 
     # # dynamic range
     if not args.dynamic_range < 0:

@@ -452,26 +452,33 @@ class CoMPaseD_Tabs(QtW.QWidget):
         # # set Further settings box
         self.FurtherSettingsBox = QtW.QGroupBox(parent=self.ParamTab)
         self.FurtherSettingsBox.setTitle("Further settings")
-        self.FurtherSettingsBox.setGeometry(rel_pos(825, 500, 300, 200))
+        self.FurtherSettingsBox.setGeometry(rel_pos(825, 500, 300, 230))
         # # # set labels for further settings
         self.MaxProteasesLabel = QtW.QLabel(parent=self.FurtherSettingsBox)
         self.RandomSamplingsLabel = QtW.QLabel(parent=self.FurtherSettingsBox)
         self.DynamicRangeLabel = QtW.QLabel(parent=self.FurtherSettingsBox)
+        self.ProteinGroupingLabel = QtW.QLabel(parent=self.FurtherSettingsBox)
         # # # # setup labels for further settings
         self.MaxProteasesLabel.setText("Maximal proteases")
         self.RandomSamplingsLabel.setText("Random samplings")
         self.DynamicRangeLabel.setText("Dynamic range")
+        self.ProteinGroupingLabel.setText("Enable protein grouping")
         self.MaxProteasesLabel.setProperty("class", "normal_lable")
         self.RandomSamplingsLabel.setProperty("class", "normal_lable")
         self.DynamicRangeLabel.setProperty("class", "normal_lable")
+        self.ProteinGroupingLabel.setProperty("class", "normal_lable")
         # # # # position labels for further settings
-        self.MaxProteasesLabel.setGeometry(rel_pos(110, 40, 200, 25))
-        self.RandomSamplingsLabel.setGeometry(rel_pos(110, 90, 200, 25))
-        self.DynamicRangeLabel.setGeometry(rel_pos(110, 140, 200, 25))
+        self.MaxProteasesLabel.setGeometry(rel_pos(110, 75, 200, 25))
+        self.RandomSamplingsLabel.setGeometry(rel_pos(110, 125, 200, 25))
+        self.DynamicRangeLabel.setGeometry(rel_pos(110, 175, 200, 25))
+        #self.ProteinGroupingLabel.setGeometry(rel_pos(110, 30, 200, 25))
+        self.ProteinGroupingLabel.setGeometry(rel_pos(48, 30, 200, 25))
         # # # set spin-boxes for further settings
         self.MaxProteasesSpinbox = QtW.QSpinBox(parent=self.FurtherSettingsBox)
         self.RandomSamplingsSpinbox = QtW.QSpinBox(parent=self.FurtherSettingsBox)
         self.DynamicRangeSpinbox = QtW.QDoubleSpinBox(parent=self.FurtherSettingsBox)
+        self.ProteinGroupingCheckbox = QtW.QCheckBox(parent=self.FurtherSettingsBox)
+        self.ProteinGroupingCheckbox.setChecked(False)
         # # # # setup spin-boxes for further settings
         self.MaxProteasesSpinbox.setValue(5)
         self.MaxProteasesSpinbox.setMinimum(1)
@@ -505,16 +512,21 @@ class CoMPaseD_Tabs(QtW.QWidget):
                                 "detectable proteins in orders of magnitude.<br><br>" \
                                 "Higher values result in clustering of the randomly sampled peptides<br>" \
                                 "around fewer proteins. Select 0 to disable. (Default = 6, Maximum = 10)"
+        protein_grouping_tooltip = "Enable protein grouping and the usage of shared peptides during random sampling and result analysis<br>"\
+                                    "(Default = Off, consider only unique peptides)"
         self.MaxProteasesLabel.setToolTip(max_proteases_tooltip)
         self.MaxProteasesSpinbox.setToolTip(max_proteases_tooltip)
         self.RandomSamplingsLabel.setToolTip(random_sampling_tooltip)
         self.RandomSamplingsSpinbox.setToolTip(random_sampling_tooltip)
         self.DynamicRangeLabel.setToolTip(dynamic_range_tooltip)
         self.DynamicRangeSpinbox.setToolTip(dynamic_range_tooltip)
+        self.ProteinGroupingCheckbox.setToolTip(protein_grouping_tooltip)
         # # # # position spin-boxes for further settings
-        self.MaxProteasesSpinbox.setGeometry(rel_pos(20, 40, 80, 25))
-        self.RandomSamplingsSpinbox.setGeometry(rel_pos(20, 90, 80, 25))
-        self.DynamicRangeSpinbox.setGeometry(rel_pos(20, 140, 80, 25))
+        self.MaxProteasesSpinbox.setGeometry(rel_pos(20, 75, 80, 25))
+        self.RandomSamplingsSpinbox.setGeometry(rel_pos(20, 125, 80, 25))
+        self.DynamicRangeSpinbox.setGeometry(rel_pos(20, 175, 80, 25))
+        #self.ProteinGroupingCheckbox.setGeometry(rel_pos(82, 30, 28, 30))
+        self.ProteinGroupingCheckbox.setGeometry(rel_pos(20, 30, 28, 30))
 
         # # set save and load parameter buttons
         self.SaveParamsButton = QtW.QPushButton(parent=self.ParamTab)
@@ -523,15 +535,15 @@ class CoMPaseD_Tabs(QtW.QWidget):
         self.SaveParamsButton.setText("Save parameters")
         self.LoadParamsButton.setText("Load parameters")
         # # # # position save and load button
-        self.SaveParamsButton.setGeometry(rel_pos(788, 725, 150, 35))
-        self.LoadParamsButton.setGeometry(rel_pos(976, 725, 150, 35))
+        self.SaveParamsButton.setGeometry(rel_pos(788, 735, 150, 35))
+        self.LoadParamsButton.setGeometry(rel_pos(976, 735, 150, 35))
 
         # # set placeholder lable to show errors in param file
         self.ParamErrorLabel = QtW.QLabel(parent=self.ParamTab)
         self.ParamErrorLabel.setText("")
         self.ParamErrorLabel.setProperty("class", "err_lable")
         self.ParamErrorLabel.setWordWrap(True)
-        self.ParamErrorLabel.setGeometry(rel_pos(788, 760, 300, 50))
+        self.ParamErrorLabel.setGeometry(rel_pos(788, 770, 300, 50))
 
         ##############################
         # setup export tab
@@ -1053,6 +1065,7 @@ class CoMPaseD_Tabs(QtW.QWidget):
         self.ClipsBrowseButton.setEnabled(False)
         self.PromastBrowseButton.setEnabled(False)
         self.SamplingOutputCheckbox.setEnabled(False)
+        self.ProteinGroupingCheckbox.setEnabled(False)
         self.SaveConfigButton.setEnabled(False)
         self.LoadConfigButton.setEnabled(False)
 
@@ -1108,6 +1121,7 @@ class CoMPaseD_Tabs(QtW.QWidget):
         self.ClipsBrowseButton.setEnabled(True)
         self.PromastBrowseButton.setEnabled(True)
         self.SamplingOutputCheckbox.setEnabled(True)
+        self.ProteinGroupingCheckbox.setEnabled(True)
         self.SaveConfigButton.setEnabled(True)
         self.LoadConfigButton.setEnabled(True)
 

@@ -273,13 +273,12 @@ def main():
             # read relevant columns to pandas df
             df = read_csv(f, delimiter='\t', usecols=["peptide", "protein", "location"])
             # keep = False to keep only unique peptides within a certain protease / mc combination
-            df_reduced = df.drop_duplicates(subset="peptide", keep=False, ignore_index=True)
 
-            df_reduced = df_reduced.assign(MC=Series([mc] * len(df_reduced.index)))
-            df_reduced = df_reduced.assign(Enzyme=Series([protease] * len(df_reduced.index)))
+            df_non_unique = df.assign(MC=Series([mc] * len(df.index)))
+            df_non_unique = df_non_unique.assign(Enzyme=Series([protease] * len(df_non_unique.index)))
 
             # df_complete = df_complete.append(df_reduced, ignore_index=True) # deprecated
-            df_complete = concat([df_complete, df_reduced], axis=0, join='outer', ignore_index=True)
+            df_complete = concat([df_complete, df_non_unique], axis=0, join='outer', ignore_index=True)
 
     complete_df_file = path.join(out_folder, "unique_peptides_table_unfiltered.tsv")
     df_complete.to_csv(complete_df_file, index=False, sep="\t")
@@ -287,14 +286,17 @@ def main():
     # remove redundant peptides from multiple missed cleavages
     df_complete_sorted = df_complete.sort_values(by='MC', ascending=False, kind='mergesort')
     # keep=last to remove duplicates with less than max mc in each file (crux generates peptides with zero to max mc's)
-    df_filtered_sorted = df_complete_sorted.drop_duplicates(subset=['peptide', 'Enzyme'], keep='last',
+    df_filtered_sorted = df_complete_sorted.drop_duplicates(subset=['peptide', 'Enzyme', 'protein'], keep='last',
                                                             ignore_index=True)
 
+
+    '''
     if not path.join(args.unique_peps_file) == "":
         filtered_df_file = path.join(out_folder, "unique_peptides_table_filtered.tsv")
     else:
         filtered_df_file = path.join(out_folder, "unique_peptides_table_filtered.tsv")
-
+    '''
+    filtered_df_file = path.join(out_folder, "unique_peptides_table_filtered.tsv")
     df_filtered_sorted.to_csv(filtered_df_file, index=False, sep="\t")
 
     print("Finished pooling digests", flush=True)

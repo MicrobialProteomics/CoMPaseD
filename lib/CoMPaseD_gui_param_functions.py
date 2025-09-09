@@ -78,6 +78,7 @@ class CoMPaseD_Parameter:
         self.Peptide_IDs_weight = "1.0"
         self.Coverage_weight = "1.0"
         self.Use_DeepMSPeptide_Predictions = "True"
+        self.Use_Unique_Peptides_Only = "True"
         self.Weights_DeepMSPeptide_Predictions = "1.0000"
         self.Path_DeepMSPeptide_Model = str(dmsp_model_location)
         self.Protein_weight_file = str(getcwd()) + str("\\ProteinIdentifierList.tsv")
@@ -150,6 +151,7 @@ class CoMPaseD_Parameter:
             self.Peptide_IDs_weight = param_import_dict["Peptide_IDs_weight"]
             self.Coverage_weight = param_import_dict["Coverage_weight"]
             self.Use_DeepMSPeptide_Predictions = param_import_dict["Use_DeepMSPeptide_Predictions"]
+            self.Use_Unique_Peptides_Only = param_import_dict["Use_Unique_Peptides_Only"]
             self.Protein_weight_file = param_import_dict["Protein_weight_file"]
             # handle optional settings
             if "Path_DeepMSPeptide_Model" in param_import_dict.keys():
@@ -224,6 +226,11 @@ class CoMPaseD_Parameter:
             tab_wdg.DMSPWeightSpinbox.setValue(float(self.Weights_DeepMSPeptide_Predictions))
         if self.Use_DeepMSPeptide_Predictions == "False":
             tab_wdg.DMSPBox.setChecked(False)
+        if self.Use_Unique_Peptides_Only == "False":
+            tab_wdg.ProteinGroupingCheckbox.setChecked(True)
+        else:
+            tab_wdg.ProteinGroupingCheckbox.setChecked(False)
+
 
         # load protease table data
         # set row count by number of proteases
@@ -343,6 +350,10 @@ class CoMPaseD_Parameter:
             self.Weights_DeepMSPeptide_Predictions = str(tab_wdg.DMSPWeightSpinbox.value())
         if not tab_wdg.DMSPBox.isChecked():
             self.Use_DeepMSPeptide_Predictions = "False"
+        if tab_wdg.ProteinGroupingCheckbox.isChecked():
+            self.Use_Unique_Peptides_Only = "False"
+        else:
+            self.Use_Unique_Peptides_Only = "True"
 
         self.Protein_weight_file = path.join(tab_wdg.Protein_weight_file)
         return self
@@ -789,6 +800,7 @@ class CoMPaseD_Parameter:
             self.Peptide_IDs_weight = param_import_dict["Peptide_IDs_weight"]
             self.Coverage_weight = param_import_dict["Coverage_weight"]
             self.Use_DeepMSPeptide_Predictions = param_import_dict["Use_DeepMSPeptide_Predictions"]
+            self.Use_Unique_Peptides_Only = param_import_dict["Use_Unique_Peptides_Only"]
             self.Protein_weight_file = param_import_dict["Protein_weight_file"]
             # handle optional settings
             if "Path_DeepMSPeptide_Model" in param_import_dict.keys():
