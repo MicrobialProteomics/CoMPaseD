@@ -36,9 +36,19 @@ Each parameter is specified using a keyword, with a brief explanation of its fun
 
 ### **Protease Digestion Parameters**  
 (params-proteases)=
-- **Proteases**: List of proteases used for digestion (comma-separated). Only protease names available in the Crux toolkit are allowed *(default = `trypsin,lysarginase,glu-c,chymotrypsin,lys-c`)*.  
+- **Proteases**: List of proteases used for digestion (comma-separated). Only protease names available in the Crux toolkit are allowed *(default = `trypsin,lysarginase,glu-c,chymotrypsin,lys-c`)*. The custom enzyme mode from crux can be enabled by prefixing any protease with custom and suffixing by the cleavage rule as used in Crux, *e.g.* `custom trypsin_new [KR]|{P}` would create a custom trypsin_new cleaving after K and R but not if followed by P.  
 (params-max_mc)=
-- **Max_MCs**: Maximum number of missed cleavages (MCs) allowed per protease. The order corresponds to `Proteases` *(default = `2,2,5,5,2`)*.  
+- **Max_MCs**: Maximum number of missed cleavages (MCs) allowed per protease. The order corresponds to `Proteases` *(default = `2,2,5,5,2`)*.
+
+*the following parameters are only available in the command line version of CoMPaseD:*
+(params-min_pep_mw)=
+- **Min_Pep_MW**: Minimum peptide mass to be considered for digestion *(default = `400`)*.  
+(params-max_pep_mw)=
+- **Max_Pep_MW**: Maximum peptide mass to be considered for digestion *(default = `6000`)*.  
+(params-min_pep_len)= 
+- **Min_Pep_Len**: Minimum peptide length to be considered for digestion *(default = `6`)*.  
+(params-max_pep_len)= 
+- **Max_Pep_Len**: Maximum peptide length to be considered for digestion *(default = `55`)*.  
 
 
 ### **Peptide Sampling & Coverage**  
@@ -59,6 +69,8 @@ The default configuration indicates that for trypsin there are peptides with zer
 - **Bins**: Protein length bins used to calculate group-wise protease scores *(default = `0,50,100,99999`)*.  
 
 ### **Monte Carlo Simulation Parameters**  
+-(params-unique_peptides_only)=
+- **Use_Unique_Peptides_Only**: If `True`, only peptides that map uniquely to one protein are retained for every protease. If set to `False`, all peptides are used and CoMPaseD builds protein groups where required. *(default = `True`)*.
 (params_max_proteases)=  
 - **Number_of_Proteases**: Maximal number of proteases concurrently used in the analysis *(default = `5`)*.  
 (params_n_samplings)=  
@@ -115,6 +127,10 @@ Max_MCs = 2,2,5,5,2
 Freq_MCs = [0.7415,0.2090,0.0484],[0.5757,0.2899,0.1336],[0.5620,0.2753,0.1110,0.0419,0.0086,0.0012],[0.2002,0.3369,0.2648,0.1471,0.0498,0.0012],[0.9102,0.0836,0.0058]
 Peptides_Sampling_Size = 10000,10000,10000,10000,10000
 Pep_Level_Proteome_Cov = 0.033051,0.031973356,0.014570424,0.009367681,0.053870932
+Min_Pep_MW = 400
+Max_Pep_MW = 6000
+Min_Pep_Len = 6
+Max_Pep_Len = 55
 Sampling_Size_Based_On = number
 Bins = 0,50,100,99999
 Number_of_Proteases = 5
@@ -126,6 +142,7 @@ Peptide_IDs_weight = 1.0
 Coverage_weight = 1.0
 Use_DeepMSPeptide_Predictions = True
 Weights_DeepMSPeptide_Predictions = 1.0
+Use_Unique_Peptides_Only = True
 Path_DeepMSPeptide_Model = C:/Programs/CoMPaseD/bin/CoMPaseDDMSPModel.h5
 Protein_weight_file = 
 Digestion_result_file = C:/CoMPaseD_Data/output/unique_peptides_table_filtered.tsv

@@ -59,11 +59,15 @@ This table lists the available proteases in your lab along with relevant propert
 * `pepsin-a`
 * `elastase-trypsin-chymotrypsin`
 * lysarginase  
+```{note} 
+The highlighted proteases do not cleave when the cleavage site is followed by proline.
+```
+
+Additionally, **custom enzymes** can be specified using the *custom* keyword followed by a freely definable name and the protease specificity. Specificity must be defined as in crux by two pairs of squared or curly brackets enclosing residues N-terminal and C-terminal to the cleavage site. Residues in squared brackets trigger cleavage, those in curly brackets prevent it. Example: `custom trypsin_new [KR]|{P}` will create a custom protease named trypsin_new in the output and cleave C-terminal to K and R residues if those are not followed by P.
 
 *Parameter file: [Proteases](params-proteases)*  
 
-```{note} The highlighted proteases do not cleave when the cleavage site is followed by proline.
-```
+
 
 The **Max MCs column** specifies the maximum number of missed cleavage sites (MCs) expected for each protease. The **MC frequency column** defines the distribution of MCs across all identified peptides for each protease. This should be listed in ascending order of MCs, including a value for peptides without missed cleavages, and values for different proteases can be separated by square brackets.  
 *Parameter file: [Max_MCs](params-max_mc)*  
@@ -79,15 +83,15 @@ Although these values are highly dependent on the experimental setup, a rough es
   
 
   
-### Protease binning  
+### Protein binning  
 
-CoMPaseD is designed to compare the suitability of different proteases or combinations for detecting small proteins. Thus, proteins can be grouped by length using the **Protein size binning (aa)** setting, with protease scores calculated separately for each group. To this aim, protein length values are provided as a comma separated list, *e.g.* `0,70,99999` to create two bins: i) proteins up to 70 amino acids length, and ii) proteins between 71 and 99,999 amino acids length.  
+CoMPaseD is designed to compare the suitability of different proteases or combinations for detecting small proteins. Thus, proteins can be grouped by length using the **Protein size binning (aa)** setting, with protease scores calculated separately for each group. To this aim, protein length values are provided as a comma-separated list, *e.g.* `0,70,99999` to create two bins: i) proteins up to 70 amino acids length, and ii) proteins between 71 and 99,999 amino acids length.  
 *Parameter file: [Bins](params_bins)*  
 
 An undetectable fraction of the proteins can also be specified for each protein group in the **Undetectable fraction (%)** field. This is particularly useful when working with databases containing *in-silico* predicted small open reading frames (sORFs), which are often not expressed *in vivo*. In such cases, a high undetectable fraction can compensate for the inherent bias against large proteins. Conversely, if the experiment involves enrichment of small proteins, the undetectable fraction for large proteins can be increased to reflect their depletion.  
 *Parameter file: [Not_expressed_fraction](params_undetectable)*  
 
-Protein groups can also be customized using user-defined annotations (e.g., cellular localization) by uploading tab-delimited annotation files in the [export tab](gui_export). These files must contain a column named **Identifier** corresponding to protein identifiers in the export tab and at least one column for protein grouping.  
+Protein groups can also be customised using user-defined annotations (e.g. cellular localisation) by uploading tab-delimited annotation files in the [export tab](gui_export). These files must contain a column named **Identifier** corresponding to protein identifiers in the export tab and at least one column for protein grouping.  
 
 
 
@@ -104,6 +108,9 @@ The **Prediction weight** parameter adjusts the influence of peptide detectabili
 
 
 ### Further settings  
+
+CoMPaseD considers only unique peptides per protease by default. If all peptides should be considered and protein groups be built, the option **Enable Protein Grouping** can be activated. The median number of peptides per protein in the group and the median sequence coverage in the group will be considered the representative value of the group for calculating the protease score.  
+*Parameter file: [Use_Unique_Peptides_Only](params-unique_peptides_only)* (Note that the parameter value is True by default, i.e. do not enable protein grouping.)  
 
 The protease score typically increases with the number of proteases used. However, due to constraints like sample availability and instrument time, it is often impractical to use too many proteases. The **Maximal proteases** setting limits the number of proteases combined in a single analysis.  
 *Parameter file: [Number_of_Proteases](params_max_proteases)*  
@@ -142,7 +149,8 @@ For further details on this table, refer to [ProteinAbundance.tsv](result-protei
 *Parameter file: [Protein_weight_file](params_protein_abundance_file)*  
 
 
-```{hint} Saving this table allows for repeating analyses with different settings, e.g. for the specificity of proteases or the number of identified peptides while keeping abundance values constant. However, due to the semi-random nature of subsequent peptide sampling, slightly different results are expected for each run even when parameters are kept constant.
+```{hint} 
+Saving this table allows for repeating analyses with different settings, e.g. for the specificity of proteases or the number of identified peptides while keeping abundance values constant. However, due to the semi-random nature of subsequent peptide sampling, slightly different results are expected for each run even when parameters are kept constant.
 ```  
 
 

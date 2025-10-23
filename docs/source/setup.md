@@ -1,7 +1,7 @@
 (setup-installation)=
 # Installation
 
-CoMPaseD is written in Python 3 and has been tested on Windows (≥ Windows 10) and Linux machines. Installation and program start should be done via the command prompt while configuring and running CoMPaseD analyses is possible via the command prompt or the graphical interface.
+CoMPaseD is written in Python 3 and has been tested on Windows (≥ Windows 10) and Linux machines. Installation and program start should be done via the command prompt, while configuring and running CoMPaseD analyses is possible via the command prompt or the graphical interface.
 
 ## Dependencies
 
@@ -13,7 +13,8 @@ Download the binaries suitable for your operating system (Windows/Linux) (versio
 ### Python
 
 To run CoMPaseD python (versions 3.5–3.12 tested) is required.
-```{note} While newer python versions may be compatible, some dependencies may not be immediately available for the latest releases. It is recommended to use a tested version to ensure full functionality.
+```{note} 
+While newer python versions may be compatible, some dependencies may not be immediately available for the latest releases. It is recommended to use a tested version to ensure full functionality.
 ```
 
 Install python using:
@@ -72,7 +73,8 @@ The Python packages with suitable version numbers are listed in the provided `re
 
 ```
 
-```{tip} We recommend using a virtual environment and pip to install these dependencies.
+```{tip} 
+We recommend using a virtual environment and pip to install these dependencies.
 ```
 
 Install the Python requirements using `pip` and `requirements.txt`:

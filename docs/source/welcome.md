@@ -1,5 +1,5 @@
 # Welcome to CoMPaseD
-CoMPaseD - **Co**mparrison of **M**ultiple **P**rote**ase** **D**igestions
+CoMPaseD - **Co**mparison of **M**ultiple **P**rote**ase** **D**igestions
 
 ---
 ## Purpose
@@ -11,10 +11,11 @@ While particularly useful for studying small proteins, CoMPaseD can also be appl
 
 ---
 ## Quick Start
-If CoMPaseD is not installed on your system plase refer to [Setup](setup-Installation).
+If CoMPaseD is not installed on your system please refer to [Setup](setup-Installation).
 
 CoMPaseD provides both, a command-line interface (CLI), and a graphical user interface (GUI).  
-```{note} The following command-line calls might slightly differ depending on your python setup.
+```{note} 
+The following command-line calls might slightly differ depending on your python setup.
 ```
 For most applications the GUI is the preferred option. It can be started by running the `CoMPaseD_gui.py` command:  
 ```bash
