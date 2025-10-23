@@ -64,7 +64,8 @@ This table lists the available proteases in your lab along with relevant propert
 The highlighted proteases do not cleave when the cleavage site is followed by proline.
 ```
 
-Additionally, **custom enzymes** can be specified using the *custom* keyword followed by a freely definable name and the protease specificity. Specificity must be defined as in crux by two pairs of squared or curly brackets enclosing residues N-terminal and C-terminal to the cleavage site. Residues in squared brackets trigger cleavage, those in curly brackets prevent it. Example: `custom trypsin_new [KR]|{P}` will create a custom protease named trypsin_new in the output and cleave C-terminal to K and R residues if those are not followed by P.
+Additionally, **custom enzymes** can be specified using the *custom* keyword followed by a freely definable name and the protease specificity. Specificity must be defined as in crux by two pairs of squared or curly brackets enclosing residues N-terminal and C-terminal to the cleavage site. Residues in squared brackets trigger cleavage, those in curly brackets prevent it.   
+*Example*: `custom trypsin_new [KR]|{P}` will create a custom protease named trypsin_new in the output that cleaves C-terminal to K and R residues if those are not followed by P.
 
 *Parameter file: [Proteases](params-proteases)*  
 
