@@ -40,7 +40,7 @@ Each parameter is specified using a keyword, with a brief explanation of its fun
 (params-max_mc)=
 - **Max_MCs**: Maximum number of missed cleavages (MCs) allowed per protease. The order corresponds to `Proteases` *(default = `2,2,5,5,2`)*.
 
-*the following parameters are only available in the command line version of CoMPaseD:*
+*The following parameters are only available in the command line version of CoMPaseD:*
 (params-min_pep_mw)=
 - **Min_Pep_MW**: Minimum peptide mass to be considered for digestion *(default = `400`)*.  
 (params-max_pep_mw)=

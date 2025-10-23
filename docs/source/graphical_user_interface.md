@@ -59,6 +59,7 @@ This table lists the available proteases in your lab along with relevant propert
 * `pepsin-a`
 * `elastase-trypsin-chymotrypsin`
 * lysarginase  
+
 ```{note} 
 The highlighted proteases do not cleave when the cleavage site is followed by proline.
 ```
