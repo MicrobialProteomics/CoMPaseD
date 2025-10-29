@@ -69,7 +69,7 @@ The default configuration indicates that for trypsin there are peptides with zer
 - **Bins**: Protein length bins used to calculate group-wise protease scores *(default = `0,50,100,99999`)*.  
 
 ### **Monte Carlo Simulation Parameters**  
--(params-unique_peptides_only)=
+(params-unique_peptides_only)=
 - **Use_Unique_Peptides_Only**: If `True`, only peptides that map uniquely to one protein are retained for every protease. If set to `False`, all peptides are used and CoMPaseD builds protein groups where required. *(default = `True`)*.
 (params_max_proteases)=  
 - **Number_of_Proteases**: Maximal number of proteases concurrently used in the analysis *(default = `5`)*.  

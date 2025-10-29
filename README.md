@@ -59,9 +59,17 @@ Follow these steps to install CoMPaseD:
 
    You can start it at any time by activating the virtual environment and running:
    - `CoMPaseD_gui.py` (Graphical Interface)
-   - `CoMPaseD_cli.py` (Command-Line Interface)
- 
----
+   - `CoMPaseD_cli.py` (Command-Line Interface)  
+   
+
+7. **Example Usage of the Command-Line Interface**  
+   The CLI requires a parameter file that defines all analysis settings such as proteases, database paths, and output folders.  
+   An example parameter file and a detailed description of each parameter are available in the [extended documentation](https://microbialproteomics.github.io/CoMPaseD/source/parameters.html).
+
+   If the parameter file is located at `C:\CoMPaseD\example\example_parameters.params`, the CLI can be executed as follows:
+
+   ```bash
+   python CoMPaseD_cli.py -p C:\CoMPaseD\example\example_parameters.params
     
 ## License
 CoMPaseD is distributed under the [MIT License](LICENSE).
