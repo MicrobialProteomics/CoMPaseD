@@ -1,4 +1,4 @@
-sphinx
+sphinx==8.2.3
 myst-parser
 sphinxcontrib-bibtex
 sphinx-tabs
