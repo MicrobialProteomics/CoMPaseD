@@ -40,4 +40,5 @@ Information on further command-line arguments can be found in the [Command-line 
 
 ---
 ## Citation  
-The accompanying manuscript is currently under preparation.  
+When using [CoMPaseD](https://doi.org/10.1093/femsml/uqaf043) in your work, please cite:  
+Jürgen Bartel, Philipp T Kaulich, Borja Ferrero-Bordera, Rick Gelhausen, Rolf Backofen, Andreas Tholey, Sandra Maaß, CoMPaseD: advanced planning of proteomic experiments aiming to identify small proteins, microLife, Volume 7, 2026, uqaf043.  
